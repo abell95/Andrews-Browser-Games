@@ -1,0 +1,10 @@
+.game {
+  margin: auto;
+  display: block;
+  border: 10px solid black;
+  top: -10rem;
+}
+
+body {
+  background-color: #ddd;
+}
