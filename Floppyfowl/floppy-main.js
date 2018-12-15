@@ -70,8 +70,9 @@ window.onload = () => {
     hasCollided(playerPos) {
       let curPos = this.getPosition();
       // approximate size of player object
-      if (curPos > 140 && curPos < 200) {
+      if (curPos > 80 && curPos < 200) {
         if (playerPos < this.gap.top || playerPos > this.gap.bottom) {
+          console.log(curPos);
           return true;
         }
       }
@@ -103,15 +104,14 @@ window.onload = () => {
 
       // has the player gotten past this pipe yet
       if (!pipe.hasPassed()) {
-        if (pipe.getPosition() <= 170) {
+        if (pipe.getPosition() < 170) {
           pts++;
           pipe.setPassed();
         }
-        if (pipe.getPosition() < canvas.width) {
-          delete pipe;
-        }
       }
-
+      if (pipe.getPosition() < canvas.width) {
+        delete pipe;
+      }
       if (pipe.hasCollided(yAxis)) {
         endGame();
       }
