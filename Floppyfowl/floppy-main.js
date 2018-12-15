@@ -88,6 +88,11 @@ window.onload = () => {
     ctx.arc(200, yAxis, 30, 0, Math.PI * 2);
     ctx.fill();
 
+    // draw score tracker
+    ctx.font = "bold 24pt Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText(`SCORE: ${pts}`, canvas.width - 200, 75);
+
     // calculate gravity
     yVelocity += 0.4;
     yAxis += yVelocity;
