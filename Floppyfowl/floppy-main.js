@@ -23,8 +23,8 @@ window.onload = () => {
     constructor(xPos) {
       this.xPos = xPos;
       this.width = 120;
-      this.minGap = 300;
-      this.velocity = 6;
+      this.minGap = 225;
+      this.velocity = 6.5;
       this.gap = this.getGap();
       this.passed = false;
     }
@@ -68,12 +68,12 @@ window.onload = () => {
     }
 
     hasCollided(playerPos) {
-      if (
-        (playerPos > this.gap.top || playerPos < this.gap.bottom) &&
-        this.xPos >= 140 &&
-        this.xPos <= 200
-      ) {
-        return true;
+      let curPos = this.getPosition();
+      // approximate size of player object
+      if (curPos > 140 && curPos < 200) {
+        if (playerPos < this.gap.top || playerPos > this.gap.bottom) {
+          return true;
+        }
       }
     }
   }
@@ -123,7 +123,7 @@ window.onload = () => {
     }
 
     ticks++;
-    if (ticks % 110 == 0) {
+    if (ticks % 100 == 0) {
       let pipe = new Pipe(canvas.width);
       pipes.push(pipe);
     }
