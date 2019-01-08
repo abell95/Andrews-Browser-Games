@@ -7,5 +7,6 @@ Will probably not work great on mobile.
 ## Things I want to make here:
 
 1. Floppyfowl - flappy bird clone
-2. Meteroids - Can you guess the inspiration?
-3. Hundenwald - A proud Wolfenstein 3D clone using WebGL
+2. Galaxy Attackers - Not at all related to space invaders
+3. Meteroids - Can you guess the inspiration?
+4. Hundenwald - A proud Wolfenstein 3D clone using WebGL
