@@ -1,5 +1,5 @@
-import { canvas, ctx } from "./context.js";
-import Pipe from "./pipe.js";
+import { canvas, ctx } from "./context.mjs";
+import Pipe from "./pipe.mjs";
 
 window.onload = () => {
   // player starting position and speed
@@ -44,9 +44,6 @@ window.onload = () => {
           pipe.setPassed();
         }
       }
-      if (pipe.getPosition() < canvas.width) {
-        delete pipe;
-      }
       if (pipe.hasCollided(yAxis)) {
         endGame();
       }
@@ -72,7 +69,16 @@ window.onload = () => {
   });
 
   const endGame = () => {
-    alert(`You got ${pts} points. Better luck next time!`);
+    $("#game-over-modal").modal({ backdrop: "static" });
+
+    document.querySelector(
+      "#game-stats"
+    ).innerHTML = `<h4>You got ${pts} points. Better luck next time!</h4>`;
+
+    document.querySelector("#restart-button").addEventListener("click", () => {
+      location.reload();
+    });
+
     gameOver = true;
   };
 

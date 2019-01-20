@@ -2,13 +2,23 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"mime"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	fs := http.FileServer(http.Dir("src"))
-	http.Handle("/", fs)
+	gin := gin.Default()
 
-	log.Println("Listening on port 5000")
-	http.ListenAndServe("127.0.0.1:5000", nil)
+	gin.Use(static.Serve("/", static.LocalFile("./src", true)))
+
+	gin.Use(cors.Default())
+
+	mime.AddExtensionType(".mjs", "text/javascript")
+
+	PORT := ":5000"
+	gin.Run(PORT)
+	log.Println("Listening on port localhost" + PORT)
 }

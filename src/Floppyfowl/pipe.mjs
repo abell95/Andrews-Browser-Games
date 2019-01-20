@@ -1,4 +1,4 @@
-import { ctx } from "./context.js";
+import { canvas, ctx } from "./context.mjs";
 
 class Pipe {
   constructor(xPos) {
