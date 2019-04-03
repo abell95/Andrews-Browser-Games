@@ -11,10 +11,12 @@ Will probably not work great on mobile.
 3. Meteroids - Can you guess the inspiration?
 4. Hundenwald - A proud Wolfenstein 3D clone using WebGL
 5. Paint Canvas - A paint clone
+6. Scoundrel - A turn-based dungeon crawler
 
 ## To run:
 
 `go build -o app.exe && app.exe` to walk around annoying Windows firewall messages
+(have to do it in cmd, though- make pwsh script)
 
 ## TODO:
 
