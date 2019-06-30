@@ -8,8 +8,6 @@ const BlockSize = 30;
 canvas.width = World.getWorldWidth(BlockSize);
 canvas.height = World.getWorldHeight(BlockSize);
 
-console.log(canvas.width);
-console.log(canvas.height);
 // represent game state as a multidimensional array
 const gameworld = [];
 
@@ -35,13 +33,29 @@ const drawInnerSquare = (style, x, y) => {
   );
 };
 
+const drawSprite = (image, x, y) => {
+  const img = new Image(28, 28);
+  img.onload = () => {
+    ctx.drawImage(img, x * BlockSize + 1, y * BlockSize + 1);
+  };
+  img.src = `./assets/${image}.png`;
+};
+
 // test draw mechanism - move into world class as drawWorld method
 for (let i = 0; i < height; i++) {
   for (let j = 0; j < width; j++) {
     ctx.fillStyle = Styles.border;
     ctx.fillRect(j * BlockSize, i * BlockSize, BlockSize, BlockSize);
+    if (i == 0 && j == 0) {
+      drawSprite("hero", j, i);
+      continue;
+    }
     // create grid
-    drawInnerSquare(Styles.empty, j, i);
+    if (i % 3 !== 0) {
+      drawInnerSquare(Styles.empty, j, i);
+    } else {
+      drawInnerSquare(Styles.wall, j, i);
+    }
   }
 }
 
@@ -68,3 +82,4 @@ console.log(gameworld);
 // create player object
 // make initial draw call
 // wait for player input and then draw
+// TODO: make status bar bigger + user interactive, ask "what's in my inventory" (move it to the right side for space?)
