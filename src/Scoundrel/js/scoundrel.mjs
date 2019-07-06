@@ -18,6 +18,10 @@ let height = canvas.height / BlockSize;
 for (let i = 0; i < height; i++) {
   let row = [];
   for (let j = 0; j < width; j++) {
+    if (i == 0 && j == 0) {
+      row.push("player");
+      continue;
+    }
     if (i % 3 !== 0) {
       row.push("empty");
     } else {
@@ -46,44 +50,98 @@ const drawSprite = (image, x, y) => {
 };
 
 // test draw mechanism - move into world class as drawWorld method
-gameworld.forEach((row, i) => {
-  row.forEach((cell, j) => {
-    // create black square to start
-    ctx.fillStyle = Styles.border;
-    ctx.fillRect(j * BlockSize, i * BlockSize, BlockSize, BlockSize);
-    if (i == 0 && j == 0) {
-      drawSprite("hero", j, i);
-      return;
-    }
-    switch (cell) {
-      case "empty":
-        drawInnerSquare(Styles.empty, j, i);
-        break;
-      case "wall":
-        drawInnerSquare(Styles.wall, j, i);
-        break;
-      default:
-        console.log(`Now what do I do with this: ${cell}??`);
-    }
+const renderGameWorld = () => {
+  gameworld.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      // create black square to start
+      ctx.fillStyle = Styles.border;
+      ctx.fillRect(j * BlockSize, i * BlockSize, BlockSize, BlockSize);
+
+      // render contents of cell
+      switch (cell) {
+        case "player":
+          drawSprite("hero", j, i);
+          break;
+        case "empty":
+          drawInnerSquare(Styles.empty, j, i);
+          break;
+        case "wall":
+          drawInnerSquare(Styles.wall, j, i);
+          break;
+        default:
+          console.log(`Now what do I do with this: ${cell}??`);
+      }
+    });
   });
-});
+};
+
+renderGameWorld();
 
 document.getElementById("status").innerText +=
   "Welcome to SCOUNDREL! Press any key...\n";
 
+const findPlayer = () => {
+  let ret = {};
+  gameworld.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      if (cell == "player") {
+        ret = { x: j, y: i };
+      }
+    });
+  });
+  return ret;
+};
+
+const swap = (posOne, posTwo) => {
+  const tmp = gameworld[posTwo.y][posTwo.x];
+  gameworld[posTwo.y][posTwo.x] = gameworld[posOne.y][posOne.x];
+  gameworld[posOne.y][posOne.x] = tmp;
+};
+
+const moveDir = direction => {
+  const position = findPlayer();
+
+  switch (direction) {
+    case "left":
+      if (undefined !== gameworld[position.y][position.x - 1]) {
+        swap(position, { x: position.x - 1, y: position.y });
+      }
+      break;
+    case "right":
+      if (undefined !== gameworld[position.y][position.x + 1]) {
+        swap(position, { x: position.x + 1, y: position.y });
+      }
+      break;
+    case "up":
+      if (undefined !== gameworld[position.y - 1][position.x]) {
+        swap(position, { x: position.x, y: position.y - 1 });
+      }
+      break;
+    case "down":
+      if (undefined !== gameworld[position.y + 1][position.x]) {
+        swap(position, { x: position.x, y: position.y + 1 });
+      }
+      break;
+  }
+};
+
 document.addEventListener("keydown", evt => {
   switch (evt.key) {
     case "a":
-      console.log("go left");
+      moveDir("left");
+      renderGameWorld();
       break;
     case "d":
-      console.log("go right");
+      moveDir("right");
+      renderGameWorld();
       break;
     case "w":
-      console.log("go up");
+      moveDir("up");
+      renderGameWorld();
       break;
     case "s":
-      console.log("go down");
+      moveDir("down");
+      renderGameWorld();
       break;
     default:
       console.log(`dunno what to do with ${evt.key}`);
