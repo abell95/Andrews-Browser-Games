@@ -18,7 +18,11 @@ let height = canvas.height / BlockSize;
 for (let i = 0; i < height; i++) {
   let row = [];
   for (let j = 0; j < width; j++) {
-    row.push(0);
+    if (i % 3 !== 0) {
+      row.push("empty");
+    } else {
+      row.push("wall");
+    }
   }
   gameworld.push(row);
 }
@@ -42,26 +46,49 @@ const drawSprite = (image, x, y) => {
 };
 
 // test draw mechanism - move into world class as drawWorld method
-for (let i = 0; i < height; i++) {
-  for (let j = 0; j < width; j++) {
+gameworld.forEach((row, i) => {
+  row.forEach((cell, j) => {
+    // create black square to start
     ctx.fillStyle = Styles.border;
     ctx.fillRect(j * BlockSize, i * BlockSize, BlockSize, BlockSize);
     if (i == 0 && j == 0) {
       drawSprite("hero", j, i);
-      continue;
+      return;
     }
-    // create grid
-    if (i % 3 !== 0) {
-      drawInnerSquare(Styles.empty, j, i);
-    } else {
-      drawInnerSquare(Styles.wall, j, i);
+    switch (cell) {
+      case "empty":
+        drawInnerSquare(Styles.empty, j, i);
+        break;
+      case "wall":
+        drawInnerSquare(Styles.wall, j, i);
+        break;
+      default:
+        console.log(`Now what do I do with this: ${cell}??`);
     }
+  });
+});
+
+document.getElementById("status").innerText +=
+  "Welcome to SCOUNDREL! Press any key...\n";
+
+document.addEventListener("keydown", evt => {
+  switch (evt.key) {
+    case "a":
+      console.log("go left");
+      break;
+    case "d":
+      console.log("go right");
+      break;
+    case "w":
+      console.log("go up");
+      break;
+    case "s":
+      console.log("go down");
+      break;
+    default:
+      console.log(`dunno what to do with ${evt.key}`);
   }
-}
-
-document.getElementById("status").innerText += "\nScoundrel loaded!\n";
-
-console.log(gameworld);
+});
 
 // generate random set of rooms and passages
 /*
