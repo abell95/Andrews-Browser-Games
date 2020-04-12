@@ -12,6 +12,7 @@ Will probably not work great on mobile.
 4. Hundenwald - A proud Wolfenstein 3D clone using WebGL
 5. Paint Canvas - A paint clone
 6. Scoundrel - A turn-based dungeon crawler
+7. Game of Life - An implementation of Conway's game on a 100x100 grid
 
 ## To run:
 
