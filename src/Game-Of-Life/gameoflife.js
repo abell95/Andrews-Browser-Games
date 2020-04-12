@@ -61,23 +61,25 @@ const calculateAdjacent = (posX, posY, cells) => {
 }
 
 const computeLiving = (cells) => {
+    let tempCells = cells.slice();
     for (let i = 0; i < 30; i++) {
         for (let j = 0; j < 30; j++) {
             const adj = calculateAdjacent(j, i, cells);
             if (adj < 2 || adj > 3) {
-                cells[i][j] = false; // cell is dead
+                tempCells[i][j] = false; // cell is dead
             } else {
-                cells[i][j] = true; // cell is alive
+                tempCells[i][j] = true; // cell is alive
             }
         }
     }
+    return tempCells
 }
 
 window.onload = () => {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const cells = [];
+    let cells = [];
 
     for (let i = 0; i < 30; i++) {
         const cellRow = [];
@@ -96,7 +98,7 @@ window.onload = () => {
         ctx.fillStyle = "#606060";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        computeLiving(cells);
+        cells = computeLiving(cells);
         colorField(cells, ctx);
 
         // half second long ticks
@@ -105,7 +107,7 @@ window.onload = () => {
                 console.log("yeeeet")
                 animate();
             });
-        }, 5000);
+        }, 250);
     }
 
     animate();
